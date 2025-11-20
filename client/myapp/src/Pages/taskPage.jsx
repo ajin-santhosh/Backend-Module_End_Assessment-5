@@ -4,7 +4,7 @@ import axios from "axios";
 const API_URL = "http://localhost:5002/api/tasks";
 
 const TaskPage = () => {
-  const userId = sessionStorage.getItem('id')
+  const userId = sessionStorage.getItem("id");
   const [tasks, setTasks] = useState([]);
   const [formData, setFormData] = useState({
     title: "",
@@ -17,9 +17,11 @@ const TaskPage = () => {
   const fetchTasks = async () => {
     try {
       if (!userId) return;
-      const res = await axios.get(`${API_URL}/getTask/${userId}`,{ withCredentials: true });
+      const res = await axios.get(`${API_URL}/getTask/${userId}`, {
+        withCredentials: true,
+      });
       setTasks(res.data);
-      console.log(res.data)
+      console.log(res.data);
     } catch (err) {
       console.error(err);
       alert("Error fetching tasks");
@@ -30,13 +32,22 @@ const TaskPage = () => {
   const handleAddTask = async (e) => {
     e.preventDefault();
     try {
-      await axios.post(`${API_URL}/addTask`,{
-      userId, 
-      title: formData.title,
-      description: formData.description,
-      status: formData.status,
-    },{ withCredentials: true });
-      setFormData({ ...formData, title: "", description: "", status: "pending" });
+      await axios.post(
+        `${API_URL}/addTask`,
+        {
+          userId,
+          title: formData.title,
+          description: formData.description,
+          status: formData.status,
+        },
+        { withCredentials: true }
+      );
+      setFormData({
+        ...formData,
+        title: "",
+        description: "",
+        status: "pending",
+      });
       fetchTasks();
     } catch (err) {
       console.error(err);
@@ -47,13 +58,22 @@ const TaskPage = () => {
   // Update existing task
   const handleUpdateTask = async (taskId) => {
     try {
-      await axios.put(`${API_URL}/updateTask/${userId}/${taskId}`, {
-        title: formData.title,
-        description: formData.description,
-        status: formData.status,
-      },{ withCredentials: true });
+      await axios.put(
+        `${API_URL}/updateTask/${userId}/${taskId}`,
+        {
+          title: formData.title,
+          description: formData.description,
+          status: formData.status,
+        },
+        { withCredentials: true }
+      );
       setEditingTask(null);
-      setFormData({ ...formData, title: "", description: "", status: "pending" });
+      setFormData({
+        ...formData,
+        title: "",
+        description: "",
+        status: "pending",
+      });
       fetchTasks();
     } catch (err) {
       console.error(err);
@@ -65,7 +85,9 @@ const TaskPage = () => {
   const handleDeleteTask = async (taskId) => {
     if (!window.confirm("Are you sure you want to delete this task?")) return;
     try {
-      await axios.delete(`${API_URL}/deleteTask/${userId}/${taskId}`,{ withCredentials: true });
+      await axios.delete(`${API_URL}/deleteTask/${userId}/${taskId}`, {
+        withCredentials: true,
+      });
       fetchTasks();
     } catch (err) {
       console.error(err);
@@ -79,7 +101,9 @@ const TaskPage = () => {
 
   return (
     <div className="max-w-2xl mx-auto mt-10 p-6 bg-white shadow-lg rounded-2xl">
-      <h2 className="text-lg font-bold mb-4 text-center text-indigo-600">📝 Task Manager</h2>
+      <h2 className="text-lg font-bold mb-4 text-center text-indigo-600">
+        📝 Task Manager
+      </h2>
 
       {/* User ID Input */}
       {/* <input
@@ -92,7 +116,9 @@ const TaskPage = () => {
 
       {/* Add / Update Task Form */}
       <form
-        onSubmit={editingTask ? () => handleUpdateTask(editingTask._id) : handleAddTask}
+        onSubmit={
+          editingTask ? () => handleUpdateTask(editingTask._id) : handleAddTask
+        }
         className="space-y-3"
       >
         <input
@@ -106,7 +132,9 @@ const TaskPage = () => {
         <textarea
           placeholder="Task Description"
           value={formData.description}
-          onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+          onChange={(e) =>
+            setFormData({ ...formData, description: e.target.value })
+          }
           className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-indigo-400"
         />
         <select

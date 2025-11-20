@@ -13,19 +13,23 @@ const Register = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async(e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("Register data:", formData);
     try {
-      const response = await axios.post("http://localhost:5002/api/users/register", formData);
+      const response = await axios.post(
+        "http://localhost:5002/api/users/register",
+        formData
+      );
       console.log("Registration successful:", response.data);
-      
-       navigate("/login"); 
-    } catch (error) {
-      console.error("Registration error:", error.response?.data || error.message);
-      
-    }
 
+      navigate("/login");
+    } catch (error) {
+      console.error(
+        "Registration error:",
+        error.response?.data || error.message
+      );
+    }
   };
 
   return (
@@ -65,12 +69,12 @@ const Register = () => {
         >
           Register
         </button>
-       <p className="text-center text-gray-600 mt-4">
-  Already have an account?{" "}
-  <Link to="/login" className="text-blue-500 hover:underline">
-    Login
-  </Link>
-</p>
+        <p className="text-center text-gray-600 mt-4">
+          Already have an account?{" "}
+          <Link to="/login" className="text-blue-500 hover:underline">
+            Login
+          </Link>
+        </p>
       </form>
     </div>
   );

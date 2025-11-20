@@ -1,5 +1,5 @@
 const express = require("express");
-const Tasks = require("../models/taskModels")
+const Tasks = require("../models/taskModels");
 
 const getTask = async (req, res) => {
   try {
@@ -8,10 +8,9 @@ const getTask = async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
-}
+};
 
-
-const createTask =  async (req, res) => {
+const createTask = async (req, res) => {
   try {
     const { userId, title, description, status } = req.body;
     const newTask = new Tasks({ userId, title, description, status });
@@ -20,7 +19,7 @@ const createTask =  async (req, res) => {
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
-}
+};
 
 const updateTask = async (req, res) => {
   try {
@@ -33,24 +32,25 @@ const updateTask = async (req, res) => {
       { new: true, runValidators: true }
     );
 
-    if (!updatedTask) return res.status(404).json({ message: "Task not found" });
+    if (!updatedTask)
+      return res.status(404).json({ message: "Task not found" });
     res.json(updatedTask);
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
-}
+};
 
 const deleteTask = async (req, res) => {
   try {
     const { userId, taskId } = req.params;
 
     const deletedTask = await Tasks.findOneAndDelete({ _id: taskId, userId });
-    if (!deletedTask) return res.status(404).json({ message: "Task not found" });
+    if (!deletedTask)
+      return res.status(404).json({ message: "Task not found" });
 
     res.json({ message: "Task deleted successfully" });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
-}
-module.exports = {getTask,createTask,updateTask,deleteTask}
-
+};
+module.exports = { getTask, createTask, updateTask, deleteTask };
